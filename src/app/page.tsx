@@ -1,64 +1,117 @@
-import Image from "next/image";
+"use client";
+
+import { useEffect, useRef, useState } from "react";
+import JsBarcode from "jsbarcode";
+import styles from "./page.module.scss";
+
+const FORMATS = [
+  { value: "CODE128", label: "CODE128 (일반 텍스트/숫자)" },
+  { value: "CODE39", label: "CODE39" },
+  { value: "EAN13", label: "EAN-13 (12~13자리 숫자)" },
+  { value: "EAN8", label: "EAN-8 (7~8자리 숫자)" },
+  { value: "UPC", label: "UPC (11~12자리 숫자)" },
+  { value: "ITF14", label: "ITF-14 (13~14자리 숫자)" },
+  { value: "MSI", label: "MSI" },
+  { value: "pharmacode", label: "Pharmacode" },
+  { value: "codabar", label: "Codabar" },
+];
 
 export default function Home() {
+  const [value, setValue] = useState("1234567890");
+  const [format, setFormat] = useState("CODE128");
+  const [error, setError] = useState<string | null>(null);
+  const svgRef = useRef<SVGSVGElement | null>(null);
+
+  useEffect(() => {
+    if (!svgRef.current) return;
+    if (!value) {
+      setError("값을 입력해주세요.");
+      svgRef.current.innerHTML = "";
+      return;
+    }
+    try {
+      JsBarcode(svgRef.current, value, {
+        format,
+        displayValue: true,
+        margin: 10,
+        height: 100,
+        fontSize: 16,
+      });
+      setError(null);
+    } catch (e) {
+      setError(e instanceof Error ? e.message : "바코드를 생성할 수 없습니다.");
+      svgRef.current.innerHTML = "";
+    }
+  }, [value, format]);
+
+  const handleDownload = () => {
+    if (!svgRef.current || error) return;
+    const svgData = new XMLSerializer().serializeToString(svgRef.current);
+    const blob = new Blob([svgData], { type: "image/svg+xml;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `barcode-${value}.svg`;
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
+    <div className="min-h-screen w-full bg-zinc-50 dark:bg-black flex items-center justify-center p-4 sm:p-8">
+      <main className="w-full max-w-xl flex flex-col gap-6">
+        <header className="text-center">
+          <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-zinc-900 dark:text-zinc-50">
+            바코드 생성기
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+          <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
+            값을 입력하면 실시간으로 바코드가 생성됩니다.
           </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
+        </header>
+
+        <section className={styles.card}>
+          <div className={styles.field}>
+            <label htmlFor="value">값</label>
+            <input
+              id="value"
+              type="text"
+              value={value}
+              onChange={(e) => setValue(e.target.value)}
+              placeholder="바코드로 변환할 값"
             />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+          </div>
+
+          <div className={styles.field}>
+            <label htmlFor="format">포맷</label>
+            <select
+              id="format"
+              value={format}
+              onChange={(e) => setFormat(e.target.value)}
+            >
+              {FORMATS.map((f) => (
+                <option key={f.value} value={f.value}>
+                  {f.label}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div className={`${styles.preview} ${error ? styles.error : ""}`}>
+            {error ? <span>{error}</span> : <svg ref={svgRef} />}
+          </div>
+
+          <button
+            type="button"
+            onClick={handleDownload}
+            disabled={!!error}
+            className={styles.downloadBtn}
           >
-            Documentation
-          </a>
-        </div>
+            SVG로 다운로드
+          </button>
+        </section>
+
+        <footer className="text-center text-xs text-zinc-500 dark:text-zinc-500">
+          Built with Next.js · Tailwind · SCSS Modules
+        </footer>
       </main>
     </div>
   );
