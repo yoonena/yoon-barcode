@@ -35,11 +35,11 @@ export default function Home() {
     <div className="min-h-screen w-full bg-zinc-50 dark:bg-black flex items-center justify-center p-4 sm:p-8">
       <main className="w-full max-w-xl flex flex-col gap-6">
         <header className="text-center">
-          <h1 className="text-3xl sm:text-4xl font-bold tracking-tight leading-snug text-zinc-900 dark:text-zinc-50">
+          <h1 className="text-lg md:text-2xl lg:text-4xl font-bold tracking-tight leading-snug text-zinc-900 dark:text-zinc-50">
             김종민이 만들라고 해서 만든<br />
             <span className="text-blue-500">바코드 생성기</span>
           </h1>
-          <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
+          <p className="mt-2 text-xs md:text-sm text-zinc-600 dark:text-zinc-400">
             값을 입력하면 실시간으로 바코드가 생성됩니다.
           </p>
         </header>
