@@ -51,8 +51,7 @@
     }
   }
 
-  input,
-  select {
+  input {
     height: 2.5rem;
     padding: 0 0.75rem;
     border: 1px solid #e4e4e7;
@@ -80,27 +79,3 @@
   }
 }
 
-.downloadBtn {
-  height: 2.75rem;
-  border: none;
-  border-radius: 9999px;
-  background: #18181b;
-  color: #fafafa;
-  font-weight: 500;
-  font-size: 0.9375rem;
-  cursor: pointer;
-  transition: background 0.15s, transform 0.05s;
-
-  &:hover {
-    background: #3f3f46;
-  }
-
-  &:active {
-    transform: scale(0.98);
-  }
-
-  &:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-}
