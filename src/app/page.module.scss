@@ -1,5 +1,5 @@
 .nav {
-  background: rgba(255, 255, 255, 0.92);
+  background: rgba(255, 255, 255, 0.8);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
@@ -18,12 +18,12 @@
     }
 
     &.add {
-      background: #18181b;
+      background: #262626;
       color: #fafafa;
-      border-color: #18181b;
+      border-color: #262626;
 
       &:hover {
-        background: #27272a;
+        background: rgba(38, 38, 38, 0.8);
       }
     }
 
@@ -35,6 +35,11 @@
         background: #fef2f2;
       }
     }
+  }
+
+  @media (min-width: 578px) {
+    border-radius: 8px;
+    border: 1px solid #e4e4e7;
   }
 }
 

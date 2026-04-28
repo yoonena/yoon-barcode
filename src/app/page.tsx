@@ -189,9 +189,7 @@ export default function Home() {
           </p>
         </header>
 
-        <nav
-          className={`${styles.nav} sticky top-0 z-10 lg:rounded-lg lg:border lg:border-[#e4e4e7] px-4 py-3 flex gap-1.5 lg:gap-4`}
-        >
+        <nav className={`${styles.nav} sticky top-0 z-10 px-4 py-3 flex gap-1.5 lg:gap-4`}>
           <button
             type="button"
             className={`${styles.nav_button} ${styles.add} flex-1 h-10 gap-1.5 flex items-center justify-center px-2 text-center whitespace-nowrap cursor-pointer rounded text-xs lg:text-sm font-semibold`}
