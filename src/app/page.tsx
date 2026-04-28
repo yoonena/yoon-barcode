@@ -17,6 +17,7 @@ type CardProps = {
 
 function BarcodeCard({ barcode, index, onChange, onClearValue, onDelete, canDelete }: CardProps) {
   const svgRef = useRef<SVGSVGElement | null>(null);
+  const sectionRef = useRef<HTMLElement | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
@@ -45,7 +46,10 @@ function BarcodeCard({ barcode, index, onChange, onClearValue, onDelete, canDele
   const inputId = `value-${barcode.id}`;
 
   return (
-    <section className={`${styles.card} p-4 rounded-lg lg:py-6 gap-4 flex flex-col bg-white`}>
+    <section
+      ref={sectionRef}
+      className={`${styles.card} p-4 rounded-lg lg:py-6 gap-4 flex flex-col bg-white`}
+    >
       <div className="flex flex-row items-center justify-between w-full">
         <span className="text-5xl opacity-[0.15] font-extrabold text-zinc-500 dark:text-zinc-500">
           #{index + 1}
@@ -108,6 +112,9 @@ function BarcodeCard({ barcode, index, onChange, onClearValue, onDelete, canDele
           type="text"
           value={barcode.value}
           onChange={(e) => onChange(barcode.id, e.target.value)}
+          onFocus={() =>
+            sectionRef.current?.scrollIntoView({ behavior: "smooth", block: "center" })
+          }
           autoComplete="off"
           autoCorrect="off"
           autoCapitalize="off"
