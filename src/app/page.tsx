@@ -112,14 +112,16 @@ function BarcodeCard({ barcode, index, onChange, onClearValue, onDelete, canDele
           type="text"
           value={barcode.value}
           onChange={(e) => onChange(barcode.id, e.target.value)}
-          onFocus={() =>
-            sectionRef.current?.scrollIntoView({ behavior: "smooth", block: "center" })
-          }
+          onFocus={() => {
+            if (window.matchMedia("(min-width: 1024px)").matches) {
+              sectionRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
+            }
+          }}
           autoComplete="off"
           autoCorrect="off"
           autoCapitalize="off"
           spellCheck={false}
-          className="text-sm lg:text-base bg-white rounded-lg px-4 h-10"
+          className="text-base bg-white rounded-lg px-4 h-10"
           placeholder="이곳에 값을 입력하세요"
         />
       </div>
