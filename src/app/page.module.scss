@@ -106,3 +106,42 @@
     color: #dc2626;
   }
 }
+
+.sparrow {
+  transform-origin: bottom center;
+  animation: sparrow-peek 3.5s ease-in-out forwards;
+  will-change: transform;
+}
+
+@keyframes sparrow-peek {
+  0% {
+    transform: translateY(160%) rotate(0deg);
+  }
+  12% {
+    transform: translateY(-12%) rotate(-2deg);
+  }
+  20% {
+    transform: translateY(4%) rotate(1deg);
+  }
+  26% {
+    transform: translateY(0) rotate(0deg);
+  }
+  34% {
+    transform: translateY(0) rotate(-5deg);
+  }
+  44% {
+    transform: translateY(0) rotate(5deg);
+  }
+  54% {
+    transform: translateY(0) rotate(-4deg);
+  }
+  64% {
+    transform: translateY(0) rotate(3deg);
+  }
+  74% {
+    transform: translateY(0) rotate(0deg);
+  }
+  100% {
+    transform: translateY(160%) rotate(0deg);
+  }
+}

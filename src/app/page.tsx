@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import JsBarcode from "jsbarcode";
+import { useMediaQuery } from "@mantine/hooks";
 import styles from "./page.module.scss";
 
 type Barcode = { id: string; value: string };
@@ -139,10 +140,24 @@ function BarcodeCard({ barcode, index, onChange, onClearValue, onDelete, canDele
 export default function Home() {
   const idCounterRef = useRef(1);
   const makeId = () => String(idCounterRef.current++);
+  const isMobile = useMediaQuery("(max-width: 1279px)");
 
   const [barcodes, setBarcodes] = useState<Barcode[]>([{ id: "0", value: "" }]);
+  const [sparrowVisible, setSparrowVisible] = useState(false);
   const listRef = useRef<HTMLDivElement | null>(null);
   const lastLengthRef = useRef(barcodes.length);
+
+  useEffect(() => {
+    if (!sparrowVisible) return;
+    const t = setTimeout(() => setSparrowVisible(false), 3500);
+    return () => clearTimeout(t);
+  }, [sparrowVisible]);
+
+  useEffect(() => {
+    if (isMobile) return;
+    const interval = setInterval(() => setSparrowVisible(true), 5 * 60 * 1000);
+    return () => clearInterval(interval);
+  }, [isMobile]);
 
   const handleAdd = () => {
     setBarcodes((prev) => [...prev, { id: makeId(), value: "" }]);
@@ -178,11 +193,14 @@ export default function Home() {
   }, [barcodes.length]);
 
   return (
-    <main className="flex flex-col items-center justify-start w-full pt-[calc((100dvh-552px)/2)] lg:pt-[calc((100dvh-681px)/2)] pb-10 lg:pb-20">
+    <main className="relative flex flex-col items-center justify-start w-full pt-[calc((100dvh-552px)/2)] lg:pt-[calc((100dvh-681px)/2)] pb-10 lg:pb-20">
       <div className="w-full mx-auto max-w-xl lg:max-w-3xl flex flex-col gap-4 lg:gap-6">
         <header className="flex flex-col items-center justify-center gap-2 lg:gap-4">
           <h1 className="text-2xl text-center lg:text-4xl font-bold tracking-tight leading-snug text-zinc-900 dark:text-zinc-50">
-            김종민이 만들라고 해서 만든
+            <span className="cursor-pointer" onMouseEnter={() => setSparrowVisible(true)}>
+              김종민
+            </span>
+            이 만들라고 해서 만든
             <br />
             <span className="text-blue-500">바코드 생성기</span>
           </h1>
@@ -281,6 +299,15 @@ export default function Home() {
           광고 없다 나한테 고마워 하셈 😎 커스텀 권한은 김종민을 괴롭히세요
         </footer>
       </div>
+
+      {!isMobile && sparrowVisible && (
+        <div
+          className={`${styles.sparrow} fixed right-6 flex flex-col items-center justify-center gap-2 bottom-6 w-auto h-auto`}
+        >
+          <p className="text-base text-zinc-500 dark:text-zinc-500">설거지해라~~~</p>
+          <img src="/sparrow.png" alt="background" className="w-30 h-auto object-contain" />
+        </div>
+      )}
     </main>
   );
 }
