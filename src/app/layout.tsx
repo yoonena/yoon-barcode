@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+import ThemeToggle from "./theme-toggle";
 
 export const metadata: Metadata = {
   title: "바코드 생성기",
@@ -18,15 +19,24 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ko" className="h-full antialiased">
+    <html lang="ko" className="dark h-full antialiased" suppressHydrationWarning>
       <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              '(function(){try{if(localStorage.getItem("theme")==="light")document.documentElement.classList.remove("dark")}catch(e){}})()',
+          }}
+        />
         <link
           rel="stylesheet"
           type="text/css"
           href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/variable/pretendardvariable.css"
         />
       </head>
-      <body className="min-h-screen flex flex-col bg-zinc-50 dark:bg-black">{children}</body>
+      <body className="min-h-screen flex flex-col bg-zinc-50 dark:bg-black">
+        <ThemeToggle />
+        {children}
+      </body>
     </html>
   );
 }

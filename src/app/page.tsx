@@ -49,10 +49,10 @@ function BarcodeCard({ barcode, index, onChange, onClearValue, onDelete, canDele
   return (
     <section
       ref={sectionRef}
-      className={`${styles.card} p-4 rounded-lg lg:py-6 gap-4 flex flex-col bg-white`}
+      className={`${styles.card} p-4 rounded-lg lg:py-6 gap-4 flex flex-col bg-white dark:bg-zinc-900`}
     >
       <div className="flex flex-row items-center justify-between w-full">
-        <span className="text-5xl opacity-[0.15] font-extrabold text-zinc-500 dark:text-zinc-500">
+        <span className="text-5xl opacity-[0.15] dark:opacity-30 font-extrabold text-zinc-500 dark:text-zinc-300">
           #{index + 1}
         </span>
         <div className="flex flex-row gap-3 items-center justify-center">
@@ -122,7 +122,7 @@ function BarcodeCard({ barcode, index, onChange, onClearValue, onDelete, canDele
           autoCorrect="off"
           autoCapitalize="off"
           spellCheck={false}
-          className="text-base bg-white rounded-lg px-4 h-10"
+          className="text-base bg-white dark:bg-zinc-800 rounded-lg px-4 h-10"
           placeholder="이곳에 값을 입력하세요"
         />
       </div>
@@ -295,7 +295,7 @@ export default function Home() {
           ))}
         </div>
 
-        <footer className="text-center text-xs lg:text-sm text-zinc-500 dark:text-zinc-500">
+        <footer className="text-center text-xs lg:text-sm text-zinc-500 dark:text-zinc-400">
           광고 없다 나한테 고마워 하셈 😎 커스텀 권한은 김종민을 괴롭히세요
         </footer>
       </div>
@@ -304,7 +304,7 @@ export default function Home() {
         <div
           className={`${styles.sparrow} fixed right-6 flex flex-col items-center justify-center gap-2 bottom-6 w-auto h-auto`}
         >
-          <p className="text-base text-zinc-500 dark:text-zinc-500">설거지해라~~~</p>
+          <p className="text-base text-zinc-500 dark:text-zinc-400">설거지해라~~~</p>
           <img src="/sparrow.png" alt="background" className="w-30 h-auto object-contain" />
         </div>
       )}
